@@ -15,6 +15,7 @@
                     <th>To Account</th>
                     <th>Amount</th>
                     <th>Status</th>
+                    <th>Success Date</th>
                     <th>Description</th>
                   </tr>
                 </thead>
@@ -37,8 +38,21 @@
                             <td>
                                 {{ transaction.amount }}
                             </td>
-                            <td>
+                            {% if transaction.transaction_status == 'pending' %}
+                            	<td class="text-yellow-500">
+                                    {{ transaction.transaction_status }}
+                                </td>
+                            {% elif transaction.transaction_status == 'completed' %}
+                                <td class="text-green-500">
+                                    {{ transaction.transaction_status }}
+                                </td>
+                            {% else %}
+                                <td class="text-red-500">
                                 {{ transaction.transaction_status }}
+                                </td>
+                            {% endif %}
+                            <td>
+                                {{ transaction.success_date }}
                             </td>
                             <td>
                                 {{ transaction.transaction_description }}
