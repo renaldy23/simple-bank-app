@@ -5539,9 +5539,6 @@
   .loading-xs {
     width: calc(var(--size-selector, 0.25rem) * 4);
   }
-  .w-1 {
-    width: calc(var(--spacing) * 1);
-  }
   .w-1\/2 {
     width: calc(1/2 * 100%);
   }
@@ -6665,9 +6662,6 @@
     color: var(--color-warning-content);
     --alert-color: var(--color-warning);
   }
-  .border-base-content {
-    border-color: var(--color-base-content);
-  }
   .border-base-content\/5 {
     border-color: color-mix(in oklab, var(--color-base-content) 5%, transparent);
   }
@@ -7707,9 +7701,6 @@
   }
   .progress-warning {
     color: var(--color-warning);
-  }
-  .text-base-content {
-    color: var(--color-base-content);
   }
   .text-base-content\/70 {
     color: color-mix(in oklab, var(--color-base-content) 70%, transparent);
