@@ -1,0 +1,52 @@
+{% extends 'dashboard/base.html' %}
+
+{% block dashboard_content %}
+	{% if accounts is None %}
+		<div role="alert" class="alert alert-info">
+            <i class="fa-solid fa-circle-info"></i>
+            <span class="font-medium">Currently, you don't have active bank account. <a href="{% url 'account-create' %}" class="font-bold hover:underline">Create new!</a></span>
+        </div>
+    {% else %}
+        <div class="flex justify-end">
+            <a href="{% url "account-create" %}" class="btn btn-primary rounded-md">Add New</a>
+        </div>
+        <div class="grid grid-cols-3 gap-4 mt-4">
+            {% for account in accounts %}
+            	<div class="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden hover:shadow-md transition-shadow">
+                    <div class="p-5">
+                      <div class="flex justify-between items-start mb-4">
+                        <div>
+                            <h3 class="font-semibold text-lg">{{ account.card_name }}</h3>
+                            <p class="text-sm text-gray-500">{{ account.account_purpose }}</p>
+                        </div>
+                        {% if account.status == 'active' %}
+                        	<div class="badge badge-outline badge-success">active</div>
+                        {% elif account.status == 'suspended' %}
+                            <div class="badge badge-outline badge-error">suspended</div>
+                        {% elif account.status == 'pending' %}
+                            <div class="badge badge-outline badge-warning">pending</div>
+                        {% elif account.status == 'closed' %}
+                            <div class="badge badge-outline badge-neutral">closed</div>
+                        {% endif %}
+                      </div>
+
+                      <div class="mb-4">
+                        <div class="text-sm text-gray-500 mb-1">Account Number</div>
+                        <div class="font-mono text-sm">{{ account.account_number }}</div>
+                      </div>
+
+                      <div>
+                        <div class="text-sm text-gray-500 mb-1">Available Balance</div>
+                        <div class="text-xl font-semibold">{{ account.currency }} {{ account.current_balance }}</div>
+                      </div>
+                    </div>
+                    <div class="bg-gray-50 px-5 py-3 flex justify-end gap-2">
+{#                        <a href="" class="btn btn-outline btn-neutral rounded-md">Details</a>#}
+                        <a href="" class="btn btn-error rounded-md">Close</a>
+                    </div>
+                  </div>
+            {% endfor %}
+            
+        </div>
+	{% endif %}
+{% endblock %}

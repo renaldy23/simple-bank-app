@@ -1,0 +1,55 @@
+{% extends "dashboard/base.html" %}
+
+{% block dashboard_content %}
+    <form method="post">
+        {% csrf_token %}
+        <div class="form-control w-full mb-4">
+            <label for="phone" class="label">
+                <span class="label-text">Card Name</span>
+            </label>
+            <input type="text" name="card_name" placeholder="Primary" class="input input-bordered w-full rounded-none" required/>
+        </div>
+        <div class="form-control w-full mb-4">
+            <label for="phone" class="label">
+                <span class="label-text">Card Holder Name</span>
+            </label>
+            <input type="text" name="card_holder_name" placeholder="John" class="input input-bordered w-full rounded-none" required/>
+        </div>
+        <div class="form-control w-full mb-4">
+            <label for="phone" class="label">
+                <span class="label-text">Identity Card Number</span>
+            </label>
+            <input type="number" name="identity_number" placeholder="8921800219xxxx" class="input input-bordered w-full rounded-none" required/>
+        </div>
+        <div class="form-control w-full mb-4">
+            <label for="phone" class="label">
+                <span class="label-text">Tax Number</span>
+            </label>
+            <input type="number" name="tax_number" placeholder="92100921xxxx" class="input input-bordered w-full rounded-none" required/>
+        </div>
+         <div class="form-control w-full mb-4">
+            <label for="phone" class="label">
+                <span class="label-text">Currency</span>
+            </label>
+            <input type="text" name="currency" class="input input-bordered w-full rounded-none border disabled cursor-not-allowed" value="IDR" required/>
+        </div>
+         <div class="form-control w-full mb-4">
+            <label for="phone" class="label">
+                <span class="label-text">Add Initial Balance</span>
+            </label>
+            <input type="number" name="current_balance" placeholder="15,000,000" class="input input-bordered w-full rounded-none" required/>
+        </div>
+        <div class="form-control w-full mb-4">
+            <label for="account_purpose" class="label">
+                <span class="label-text">Account Purpose</span>
+            </label>
+            <select class="select w-full rounded-none" name="account_purpose">
+              <option disabled selected>Pick account purpose</option>
+              <option value="savings">Savings</option>
+              <option value="spending">Spending</option>
+            </select>
+        </div>
+
+        <button type="submit" class="btn btn-primary rounded-none">Submit</button>
+    </form>
+{% endblock %}

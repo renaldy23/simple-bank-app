@@ -1,0 +1,36 @@
+{% extends 'dashboard/base.html' %}
+
+{% block dashboard_content %}
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="form-control w-full mb-4">
+            <label for="phone" class="label">
+                <span class="label-text">Phone Number</span>
+            </label>
+            <input type="number" name="phone" placeholder="628xxxx" class="input input-bordered w-full rounded-none" value="{{ profile.phone }}" required/>
+        </div>
+        <fieldset class="form-control mb-4 w-full">
+          <label for="phone" class="label">
+              <span class="label-text">Address</span>
+          </label>
+          <textarea class="textarea h-24 rounded-none w-full" name="address" placeholder="Address" required>{% if profile.address is not None %}{{ profile.address }}{% endif %}</textarea>
+        </fieldset>
+        <div class="form-control w-full mb-4">
+            <label for="birth_of_date" class="label">
+                <span class="label-text">Birth of Date</span>
+            </label>
+            <input type="date" name="date_of_birth" placeholder="628xxxx" class="input input-bordered w-full rounded-none" value="{{ profile.date_of_birth|date:'Y-m-d' }}" required/>
+        </div>
+        <div class="form-control w-full mb-4">
+            <label for="birth_of_date" class="label">
+                <span class="label-text">Photo</span>
+            </label>
+            {% if profile.photo is not None %}
+            	<p>Current Photo : {{ profile.photo.name }}</p>
+            {% endif %}
+            <input type="file" name="photo" class="file-input w-full rounded-none" accept="image/*" {% if profile.photo is None %} required {% endif %}/>
+        </div>
+
+        <button type="submit" class="btn btn-primary rounded-none">Submit</button>
+    </form>
+{% endblock %}

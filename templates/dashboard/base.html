@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="min-h-screen flex flex-col md:flex-row">
+        <aside class="bg-gray-800 text-white w-full md:w-64 md:min-h-screen p-4">
+            <div class="flex items-center justify-between md:justify-center mb-8">
+                <div class="flex items-center space-x-2">
+                    <span class="text-xl font-bold">BANK</span>
+                    <p>App</p>
+                </div>
+                <button class="md:hidden text-white focus:outline-none">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+            <nav>
+                <ul class="space-y-2">
+                    <li>
+                        <a href="{% url 'dashboard' %}" class="flex items-center space-x-2 p-2 rounded-lg {% if request.path == '/dashboard/' %} bg-indigo-600 {% else %} hover:bg-gray-700 {% endif %}" >
+                            <span>Dashboard</span>
+                        </a>
+                    </li>
+                    {% if profile is not None %}
+                    	{% if profile.is_complete %}
+                    		<li>
+                                <a href="{% url 'account-view' %}" class="flex items-center space-x-2 p-2 rounded-lg {% if request.path == '/account/list/' %} bg-indigo-600 {% else %} hover:bg-gray-700 {% endif %}">
+                                    <span>Accounts</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{% url 'transaction-list' %}" class="flex items-center space-x-2 p-2 rounded-lg {% if request.path == '/transaction/list/' %} bg-indigo-600 {% else %} hover:bg-gray-700 {% endif %}">
+                                    <span>Transaction</span>
+                                </a>
+                            </li>
+                    	{% endif %}
+                    {% else %}
+                        <li>
+                            <a href="{% url 'account-view' %}" class="flex items-center space-x-2 p-2 rounded-lg {% if request.path == '/account/list/' %} bg-indigo-600 {% else %} hover:bg-gray-700 {% endif %}">
+                                <span>Accounts</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{% url 'transaction-list' %}" class="flex items-center space-x-2 p-2 rounded-lg {% if request.path == '/transaction/list/' %} bg-indigo-600 {% else %} hover:bg-gray-700 {% endif %}">
+                                <span>Transaction</span>
+                            </a>
+                        </li>
+                    {% endif %} 
+                </ul>
+            </nav>
+            <div class="absolute bottom-0 left-0 p-4 w-full md:w-64">
+                <form action="{% url "logout" %}" method="post">
+                    {% csrf_token %}
+                    <button class="btn btn-outline btn-secondary w-full">Logout</button>
+                </form>
+            </div>
+        </aside>
+        <main class="flex-1 p-8">
+            {% if request.path != '/dashboard/' %}
+                <div class="flex justify-between items-center">
+                    <h1 class="text-2xl font-medium text-gray-800">{{ page_title }}</h1>
+                    <div class="flex items-center">
+                        <span class="text-2xl"><i class="fa-solid fa-circle-user"></i></span>
+                        <a href="{% url 'profile-update' user.profile.id %}" class="ml-2 hover:underline">{{ user.first_name }} {{ user.last_name }}</a>
+                    </div>
+                </div>
+                <div class="divider mb-4"></div>
+            {% endif %} 
+            {% block dashboard_content %}
+            	
+            {% endblock %}
+        </main>
+    </div>
+{% endblock %}

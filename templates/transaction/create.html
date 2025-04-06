@@ -1,0 +1,82 @@
+{% extends 'dashboard/base.html' %}
+
+{% block dashboard_content %}
+    <form method="post">
+        {% csrf_token %}
+        <div class="form-control w-full mb-4">
+            <label for="from_account" class="label">
+                <span class="label-text">From Account</span>
+            </label>
+            <select class="select w-full rounded-none" name="from_account">
+              <option disabled selected>Select source account</option>
+              {% for from in from_account %}
+                  <option value="{{ from.id }}">{{ from.account_number }} - {{ from.card_holder_name }}</option>
+              {% endfor %}
+            </select>
+        </div>
+
+        <div class="form-control w-full mb-4">
+            <label for="to_account_display" class="label">
+                <span class="label-text">To Account</span>
+            </label>
+            <div class="flex gap-2">
+                <input type="text" name="to_account_display" id="to_account_display" class="input input-bordered w-full rounded-none border" value=""/>
+                <input type="hidden" name="to_account" id="to_account" value="">
+                <a class="btn btn-primary rounded-md" onclick="checkAccount()">Check</a>
+            </div>
+            {% if form.to_account.errors %}
+                <p class="text-red-500 text-sm">{{ form.to_account.errors.0 }}</p>
+            {% endif %}
+            <p class="result-message"></p>
+        </div>
+
+        <div class="form-control w-full mb-4">
+            <label for="amount" class="label">
+                <span class="label-text">Amount</span>
+            </label>
+            <input type="number" name="amount" placeholder="100000" class="input input-bordered w-full rounded-none" required/>
+            {% if form.amount.errors %}
+                <p class="text-red-500 text-sm">{{ form.amount.errors.0 }}</p>
+            {% endif %}
+        </div>
+
+        <fieldset class="form-control mb-4 w-full">
+          <label for="transaction_description" class="label">
+              <span class="label-text">Description</span>
+          </label>
+          <textarea class="textarea h-24 rounded-none w-full" name="transaction_description" placeholder="Description"></textarea>
+        </fieldset>
+
+        <button type="submit" class="btn btn-primary rounded-md">Submit</button>
+    </form>
+{% endblock %}
+
+{% block javascript %}
+    <script>
+        function checkAccount() {
+            to_account_display = document.getElementById('to_account_display');
+            result_message = document.querySelector('.result-message');
+
+            result_message.innerHTML = '';
+
+            if (!to_account_display.value) {
+                result_message.innerHTML = 'Please enter account number';
+                return;
+            }
+
+            fetch(`/account/search/?account_number=${to_account_display.value}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        to_account_display.value = data.account_number+"-"+data.account_holder;
+                        document.getElementById('to_account').value = data.account_id;
+                    } else {
+                        result_message.innerHTML = data.message;
+                    }
+                })
+                .catch(error => {
+                    result_message.innerHTML = 'Account not found';
+                })
+        }
+    </script>
+{% endblock %}
